@@ -6,8 +6,8 @@ COPY package*.json ./
 COPY backend/package*.json ./backend/
 COPY frontend/package*.json ./frontend/
 
-# Instala dependências do monorepo
-RUN npm install
+# Instala dependências do monorepo recriando os bindings nativos para o Alpine Linux (musl)
+RUN rm -f package-lock.json backend/package-lock.json frontend/package-lock.json && npm install
 
 # Copia todo o código da aplicação
 COPY . .
