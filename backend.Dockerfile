@@ -1,5 +1,8 @@
-FROM node:20-alpine
+FROM node:20-slim
 WORKDIR /app
+
+# Instala o openssl nativo que o motor do Prisma precisa para funcionar
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 # Copia configurações base do workspace
 COPY package*.json ./
