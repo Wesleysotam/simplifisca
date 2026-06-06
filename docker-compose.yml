@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: simplifisca_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Peixecomarroz@1
+      POSTGRES_DB: simplifisca
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    container_name: simplifisca_backend
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:Peixecomarroz@1@db:5432/simplifisca?schema=public
+      - JWT_SECRET=supersecret123
+      - PORT=3333
+    ports:
+      - "3333:3333"
+    depends_on:
+      - db
+    # Executa push das tabelas, depois o seed com o usuário Elineuton, e então inicia o servidor
+    command: sh -c "npx prisma db push && npx prisma db seed && node src/server.js"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: front_simplifisca
+    restart: always
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: rede_caimbe
+    external: true

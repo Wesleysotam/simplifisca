@@ -33,7 +33,7 @@ function Login() {
     clearMessages();
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3333/api/auth/login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -61,7 +61,7 @@ function Login() {
     clearMessages();
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3333/api/auth/forgot-password', {
+      const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -84,7 +84,7 @@ function Login() {
     if (newPassword !== confirmPassword) return setError('As senhas não coincidem');
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3333/api/auth/reset-password', {
+      const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code, newPassword })
@@ -108,7 +108,7 @@ function Login() {
     if (newPassword !== confirmPassword) return setError('As senhas não coincidem');
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3333/api/auth/force-reset-password', {
+      const res = await fetch('/api/auth/force-reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, currentPassword: password, newPassword })
