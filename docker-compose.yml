@@ -28,8 +28,9 @@ services:
       - "3333:3333"
     depends_on:
       - db
-    # Executa push das tabelas, depois o seed com o usuário Elineuton, e então inicia o servidor
-    command: sh -c "npx prisma db push && npx prisma db seed && node src/server.js"
+    # Executa os comandos do Prisma a partir da raiz (onde está a pasta prisma) e depois inicia o server
+    working_dir: /app
+    command: sh -c "npx prisma db push && npx prisma db seed && node backend/src/server.js"
 
   frontend:
     build:
