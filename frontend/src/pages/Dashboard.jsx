@@ -1,8 +1,16 @@
-import React from 'react';
-import { Bell, Info, Calendar, Lightbulb, LayoutGrid, BarChart2, FileText, Settings, ShoppingBag, Factory, Briefcase } from 'lucide-react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Bell, Info, Calendar, Lightbulb, LayoutGrid, BarChart2, FileText, Settings, ShoppingBag, Factory, Briefcase, LogOut } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    navigate('/');
+  };
   const chartData = [
     { name: 'Comércio', value: 2125, color: '#9EE3FF' }, // cyan
     { name: 'Indústria', value: 1445, color: '#FFD6F9' }, // pink
@@ -13,15 +21,33 @@ function Dashboard() {
     <div className="min-h-screen bg-bg-main font-sans pb-28 pt-8 px-6 sm:px-8 max-w-md mx-auto relative shadow-2xl overflow-x-hidden">
 
       {/* HEADER */}
-      <header className="flex justify-between items-center mb-8">
-        <div className="flex items-center space-x-3">
-          <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-12 h-12 rounded-full object-cover" />
-          <div className="flex flex-col">
-            <span className="text-text-secondary text-sm font-medium">Olá,</span>
-            <span className="text-dark font-bold text-lg leading-tight">Elineuton Pinheiro</span>
-          </div>
+      <header className="flex justify-between items-center mb-8 relative z-50">
+        <div className="relative">
+          <button 
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+            className="flex items-center space-x-3 focus:outline-none"
+          >
+            <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-12 h-12 rounded-full object-cover shadow-sm border-2 border-transparent hover:border-primary transition-all" />
+            <div className="flex flex-col text-left">
+              <span className="text-text-secondary text-sm font-medium">Olá,</span>
+              <span className="text-dark font-bold text-lg leading-tight">Elineuton Pinheiro</span>
+            </div>
+          </button>
+
+          {/* DROPDOWN MENU */}
+          {isProfileOpen && (
+            <div className="absolute top-14 left-0 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 mt-1">
+              <button 
+                onClick={handleLogout}
+                className="w-full px-4 py-2 text-left flex items-center space-x-3 hover:bg-gray-50 text-dark transition-colors"
+              >
+                <LogOut size={18} className="text-red-500" />
+                <span className="font-medium">Sair da conta</span>
+              </button>
+            </div>
+          )}
         </div>
-        <button className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-md">
+        <button className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-md hover:opacity-90 transition-opacity">
           <Bell size={20} />
         </button>
       </header>
